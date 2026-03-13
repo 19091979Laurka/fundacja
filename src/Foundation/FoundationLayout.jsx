@@ -22,7 +22,7 @@ export default function FoundationLayout() {
 
   return (
     <div className="fn-root">
-      <header className="fn-header" style={scrolled ? { background: "rgba(10,22,40,0.97)" } : {}}>
+      <header className="fn-header" style={scrolled ? { boxShadow: "0 2px 20px rgba(30,58,95,0.1)" } : {}}>
         <div className="fn-header__inner">
           <NavLink to="/" className="fn-logo" onClick={() => setMenuOpen(false)}>
             <img src="/logo-nowyja.png" alt={branding.appName} />
@@ -54,7 +54,7 @@ export default function FoundationLayout() {
             ))}
             <NavLink
               to="/kontakt"
-              className="fn-btn fn-btn--primary"
+              className="fn-btn fn-btn--navy"
               style={{ marginLeft: "0.75rem", padding: "0.5rem 1.25rem", fontSize: "0.85rem" }}
               onClick={() => setMenuOpen(false)}
             >

@@ -26,7 +26,7 @@ export default function Contact() {
       </div>
 
       {/* ── CONTACT CARDS ────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section fn-section--alt">
         <div className="fn-container">
           <div className="fn-contact-grid">
             <div className="fn-contact-card">
@@ -57,106 +57,81 @@ export default function Contact() {
       {/* ── CONTACT FORM ─────────────────────────────────────── */}
       <section className="fn-section">
         <div className="fn-container">
-          <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-            <div className="fn-section__header" style={{ textAlign: "left", marginBottom: "2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
+            {/* Left: info */}
+            <div>
               <span className="fn-section__eyebrow">Formularz</span>
-              <h2 className="fn-section__title" style={{ textAlign: "left" }}>
+              <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
                 Wyślij zapytanie
               </h2>
+              <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
+                Nasz zespół odpowiada na zapytania dotyczące transferów psychiatrycznych,
+                procedur prawnych i możliwości współpracy instytucjonalnej.
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                <div className="fn-accent-box">
+                  <h4 className="fn-accent-box__title">⏱ Czas odpowiedzi</h4>
+                  <p className="fn-accent-box__text">Odpowiadamy w ciągu 24–48 godzin roboczych.</p>
+                </div>
+                <div className="fn-accent-box fn-accent-box--gold">
+                  <h4 className="fn-accent-box__title">🔒 Poufność</h4>
+                  <p className="fn-accent-box__text">Wszystkie dane są traktowane z pełną poufnością zgodnie z RODO.</p>
+                </div>
+              </div>
             </div>
 
-            {sent ? (
-              <div className="fn-goal-banner" style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>✅</div>
-                <h3 className="fn-goal-banner__title">Wiadomość wysłana!</h3>
-                <p className="fn-goal-banner__text" style={{ margin: 0 }}>
-                  Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="fn-card" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>
-                    Imię i nazwisko
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Jan Kowalski"
-                    style={{
-                      width: "100%",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: "10px",
-                      padding: "0.75rem 1rem",
-                      color: "#e2e8f0",
-                      fontSize: "0.95rem",
-                      outline: "none",
-                      transition: "border-color 0.2s",
-                    }}
-                    onFocus={(e) => (e.target.style.borderColor = "rgba(13,148,136,0.5)")}
-                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.12)")}
-                  />
+            {/* Right: form */}
+            <div>
+              {sent ? (
+                <div className="fn-goal-banner" style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>✅</div>
+                  <h3 className="fn-goal-banner__title">Wiadomość wysłana!</h3>
+                  <p className="fn-goal-banner__text" style={{ margin: 0 }}>
+                    Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.
+                  </p>
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>
-                    Adres e-mail
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="jan@przyklad.pl"
-                    style={{
-                      width: "100%",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: "10px",
-                      padding: "0.75rem 1rem",
-                      color: "#e2e8f0",
-                      fontSize: "0.95rem",
-                      outline: "none",
-                      transition: "border-color 0.2s",
-                    }}
-                    onFocus={(e) => (e.target.style.borderColor = "rgba(13,148,136,0.5)")}
-                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.12)")}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>
-                    Wiadomość
-                  </label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="Opisz sprawę pacjenta lub zadaj pytanie..."
-                    style={{
-                      width: "100%",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: "10px",
-                      padding: "0.75rem 1rem",
-                      color: "#e2e8f0",
-                      fontSize: "0.95rem",
-                      outline: "none",
-                      resize: "vertical",
-                      transition: "border-color 0.2s",
-                      fontFamily: "inherit",
-                    }}
-                    onFocus={(e) => (e.target.style.borderColor = "rgba(13,148,136,0.5)")}
-                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.12)")}
-                  />
-                </div>
-                <button type="submit" className="fn-btn fn-btn--primary fn-btn--lg" style={{ alignSelf: "flex-start" }}>
-                  Wyślij wiadomość →
-                </button>
-              </form>
-            )}
+              ) : (
+                <form onSubmit={handleSubmit} className="fn-form">
+                  <div className="fn-form__group">
+                    <label className="fn-form__label">Imię i nazwisko</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Jan Kowalski"
+                      className="fn-form__input"
+                    />
+                  </div>
+                  <div className="fn-form__group">
+                    <label className="fn-form__label">Adres e-mail</label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      placeholder="jan@przyklad.pl"
+                      className="fn-form__input"
+                    />
+                  </div>
+                  <div className="fn-form__group">
+                    <label className="fn-form__label">Wiadomość</label>
+                    <textarea
+                      required
+                      rows={5}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      placeholder="Opisz sprawę pacjenta lub zadaj pytanie..."
+                      className="fn-form__textarea"
+                    />
+                  </div>
+                  <button type="submit" className="fn-btn fn-btn--primary fn-btn--lg">
+                    Wyślij wiadomość →
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </section>

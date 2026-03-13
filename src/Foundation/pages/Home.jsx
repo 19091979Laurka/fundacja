@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -35,14 +34,15 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div style={{
-        background: "#0f2040",
-        border: "1px solid rgba(255,255,255,0.1)",
+        background: "#ffffff",
+        border: "1px solid #e2e8f0",
         borderRadius: "10px",
         padding: "0.75rem 1rem",
         fontSize: "0.85rem",
-        color: "#e2e8f0",
+        color: "#0f172a",
+        boxShadow: "0 4px 24px rgba(30,58,95,0.12)",
       }}>
-        <p style={{ margin: "0 0 0.4rem", fontWeight: 700, color: "#fff" }}>{label}</p>
+        <p style={{ margin: "0 0 0.4rem", fontWeight: 700, color: "#1e3a5f" }}>{label}</p>
         {payload.map((entry) => (
           <p key={entry.name} style={{ margin: "0.2rem 0", color: entry.color }}>
             {entry.name}: <strong>{entry.value}</strong>
@@ -60,35 +60,50 @@ export default function Home() {
 
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────── */}
+      {/* ── HERO — split layout ──────────────────────────────── */}
       <section className="fn-hero">
-        <div className="fn-hero__bg" />
-        <div className="fn-hero__overlay" />
         <div className="fn-hero__content">
-          <div className="fn-hero__badge">
-            ⚖ {branding.tagline}
+          {/* Left: text */}
+          <div className="fn-hero__text">
+            <div className="fn-hero__badge">
+              ⚖ {branding.tagline}
+            </div>
+            <h1 className="fn-hero__title">
+              Fundacja<br />
+              <span>NOWY JA</span>
+            </h1>
+            <p className="fn-hero__subtitle">
+              {home.heroSubtitle}
+            </p>
+            <div className="fn-hero__actions">
+              <Link to="/projekty" className="fn-btn fn-btn--primary fn-btn--lg">
+                Zobacz projekty
+              </Link>
+              <Link to="/o-nas" className="fn-btn fn-btn--outline fn-btn--lg">
+                O fundacji
+              </Link>
+            </div>
           </div>
-          <h1 className="fn-hero__title">
-            Fundacja<br />
-            <span>NOWY JA</span>
-          </h1>
-          <p className="fn-hero__subtitle">
-            {home.heroSubtitle}
-          </p>
-          <div className="fn-hero__actions">
-            <Link to="/projekty" className="fn-btn fn-btn--primary fn-btn--lg">
-              Zobacz projekty
-            </Link>
-            <Link to="/o-nas" className="fn-btn fn-btn--outline fn-btn--lg">
-              O fundacji
-            </Link>
+
+          {/* Right: photo */}
+          <div className="fn-hero__media">
+            <img
+              src="/buildings.jpg"
+              alt="Fundacja NOWY JA — działamy na rzecz pacjentów"
+            />
           </div>
         </div>
+
         <div className="fn-hero__scroll">
           <span>Przewiń</span>
           <div className="fn-hero__scroll-line" />
         </div>
       </section>
+
+      {/* ── HIGHLIGHT STRIP ─────────────────────────────────── */}
+      <div className="fn-highlight-strip">
+        Fundacja aktywna od 2024 · Program transferu psychiatrycznego · Polska · Holandia · Islandia
+      </div>
 
       {/* ── STAT STRIP ───────────────────────────────────────── */}
       <div className="fn-stat-strip">
@@ -110,7 +125,7 @@ export default function Home() {
       </div>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section fn-section--alt">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Proces</span>
@@ -131,28 +146,77 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── MISSION / GOAL ───────────────────────────────────── */}
+      {home.ourGoal && (
+        <section className="fn-section">
+          <div className="fn-container">
+            {/* Two-column: text left, image right */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
+              <div>
+                <span className="fn-section__eyebrow">Misja</span>
+                <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+                  Nasz cel
+                </h2>
+                <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
+                  {home.ourGoal}
+                </p>
+                <Link to="/o-nas" className="fn-btn fn-btn--primary">
+                  Więcej o fundacji →
+                </Link>
+              </div>
+              <div style={{ position: "relative" }}>
+                <img
+                  src="/interconnected.jpg"
+                  alt="Misja fundacji"
+                  style={{
+                    width: "100%",
+                    height: "360px",
+                    objectFit: "cover",
+                    borderRadius: "20px",
+                    boxShadow: "0 12px 48px rgba(30,58,95,0.14)",
+                  }}
+                />
+                {/* Blue left accent */}
+                <div style={{
+                  position: "absolute",
+                  top: "24px",
+                  left: "-12px",
+                  width: "6px",
+                  height: "calc(100% - 48px)",
+                  background: "#2563eb",
+                  borderRadius: "3px",
+                }} />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── RESULTS CHART ────────────────────────────────────── */}
-      <section className="fn-section">
+      <section className="fn-section fn-section--alt">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Dane</span>
             <h2 className="fn-section__title">Wyniki programu</h2>
+            <p className="fn-section__lead">
+              Aktywność programowa i statystyki transferów w ujęciu kierunkowym.
+            </p>
           </div>
           <div className="fn-chart-card">
             <div className="fn-chart-card__title">Aktywność programowa</div>
-            <div style={{ height: 300 }}>
+            <div style={{ height: 320 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#94a3b8" }} />
-                  <YAxis tick={{ fontSize: 12, fill: "#94a3b8" }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} />
+                  <YAxis tick={{ fontSize: 12, fill: "#64748b" }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
-                    wrapperStyle={{ fontSize: "0.82rem", color: "#94a3b8", paddingTop: "1rem" }}
+                    wrapperStyle={{ fontSize: "0.82rem", color: "#64748b", paddingTop: "1rem" }}
                   />
-                  <Bar dataKey="transfery" fill="#0d9488" name="Transfery" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="wTrakcie" fill="#7c3aed" name="W trakcie" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="liczba" fill="#c9a84c" name="Źródła finansowania" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="transfery" fill="#2563eb" name="Transfery" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="wTrakcie" fill="#0ea5e9" name="W trakcie" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="liczba" fill="#1e3a5f" name="Źródła finansowania" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -161,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* ── MAP ──────────────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Zasięg</span>
@@ -172,7 +236,7 @@ export default function Home() {
           </div>
           <div className="fn-map-card">
             <div className="fn-map-card__header">Mapa operacyjna</div>
-            <div style={{ height: 380 }}>
+            <div style={{ height: 400 }}>
               <MapContainer
                 center={mapCenter}
                 zoom={6}
@@ -198,30 +262,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MISSION / GOAL ───────────────────────────────────── */}
-      {home.ourGoal && (
-        <section className="fn-section">
-          <div className="fn-container">
-            <div className="fn-goal-banner">
-              <span className="fn-section__eyebrow" style={{ marginBottom: "0.75rem", display: "block" }}>
-                Misja
-              </span>
-              <h2 className="fn-goal-banner__title">Nasz cel</h2>
-              <p className="fn-goal-banner__text">{home.ourGoal}</p>
-              <Link to="/o-nas" className="fn-btn fn-btn--outline">
-                Więcej o fundacji →
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ── TEAM ─────────────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section fn-section--alt">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Ludzie</span>
-            <h2 className="fn-section__title">Zespół programowy</h2>
+            <h2 className="fn-section__title">Nasz Zespół</h2>
             <p className="fn-section__lead">
               Eksperci z dziedziny psychiatrii, prawa i psychologii — tworzący unikalne rozwiązania systemowe.
             </p>
@@ -257,7 +303,7 @@ export default function Home() {
           <p className="fn-cta-section__text">
             Skontaktuj się z nami — odpowiadamy na zapytania rodzin, szpitali, pełnomocników i instytucji.
           </p>
-          <Link to="/kontakt" className="fn-btn fn-btn--gold fn-btn--lg">
+          <Link to="/kontakt" className="fn-btn fn-btn--primary fn-btn--lg">
             Skontaktuj się z Biurem Koordynatora
           </Link>
         </div>

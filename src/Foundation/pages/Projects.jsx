@@ -41,7 +41,7 @@ export default function Projects() {
       </div>
 
       {/* ── PROJECT TABLE ─────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Aktywne inicjatywy</span>
@@ -60,11 +60,11 @@ export default function Projects() {
                 {items.map((item) => (
                   <tr key={item.key ?? item.title}>
                     <td>
-                      <strong style={{ color: "#fff", display: "block", marginBottom: "0.35rem" }}>
+                      <strong style={{ color: "#1e3a5f", display: "block", marginBottom: "0.35rem" }}>
                         {item.title}
                       </strong>
                       {item.text && (
-                        <span style={{ fontSize: "0.85rem", color: "#94a3b8", lineHeight: 1.6 }}>
+                        <span style={{ fontSize: "0.85rem", color: "#64748b", lineHeight: 1.6 }}>
                           {item.text}
                         </span>
                       )}
@@ -72,7 +72,7 @@ export default function Projects() {
                     <td style={{ whiteSpace: "nowrap" }}>
                       {getStatusBadge(item.status)}
                     </td>
-                    <td style={{ color: "#94a3b8", whiteSpace: "nowrap" }}>
+                    <td style={{ color: "#64748b", whiteSpace: "nowrap" }}>
                       {getKraj(item)}
                     </td>
                   </tr>
@@ -84,7 +84,7 @@ export default function Projects() {
       </section>
 
       {/* ── PATIENT PATH ─────────────────────────────────────── */}
-      <section className="fn-section">
+      <section className="fn-section fn-section--alt">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Model działania</span>
@@ -109,20 +109,40 @@ export default function Projects() {
 
       {/* ── STRATEGY ─────────────────────────────────────────── */}
       {strategy.horizon && (
-        <section className="fn-section fn-section--dark">
+        <section className="fn-section">
           <div className="fn-container">
-            <div className="fn-section__header">
-              <span className="fn-section__eyebrow">Strategia</span>
-              <h2 className="fn-section__title">Horyzont finansowania</h2>
-              <p className="fn-section__lead">{strategy.horizon}</p>
-            </div>
-            <div className="fn-feature-grid">
-              {(strategy.goals ?? []).map((goal, i) => (
-                <div key={i} className="fn-feature">
-                  <div className="fn-feature__icon">{i === 0 ? "🇪🇺" : "💶"}</div>
-                  <p className="fn-feature__text">{goal}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
+              <div>
+                <span className="fn-section__eyebrow">Strategia</span>
+                <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+                  Horyzont finansowania
+                </h2>
+                <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
+                  {strategy.horizon}
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  {(strategy.goals ?? []).map((goal, i) => (
+                    <div key={i} className="fn-accent-box" style={{ borderLeftColor: i === 0 ? "#2563eb" : "#1e3a5f" }}>
+                      <p className="fn-accent-box__text" style={{ margin: 0 }}>
+                        {i === 0 ? "🇪🇺 " : "💶 "}{goal}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div style={{ position: "relative" }}>
+                <img
+                  src="/interconnected.jpg"
+                  alt="Strategia finansowania"
+                  style={{
+                    width: "100%",
+                    height: "380px",
+                    objectFit: "cover",
+                    borderRadius: "20px",
+                    boxShadow: "0 12px 48px rgba(30,58,95,0.14)",
+                  }}
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -130,7 +150,7 @@ export default function Projects() {
 
       {/* ── PRESENTATIONS ────────────────────────────────────── */}
       {presentations.length > 0 && (
-        <section className="fn-section">
+        <section className="fn-section fn-section--alt">
           <div className="fn-container">
             <div className="fn-section__header">
               <span className="fn-section__eyebrow">Dokumenty</span>
@@ -161,7 +181,7 @@ export default function Projects() {
       )}
 
       {/* ── PARTNERS ─────────────────────────────────────────── */}
-      <section className="fn-section fn-section--dark">
+      <section className="fn-section">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Sieć</span>
