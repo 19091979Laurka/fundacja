@@ -1,0 +1,52 @@
+/* Dynamic Colorful Boxes – jasne tło, gradienty, hover, obramowanie */
+
+$dynamic-box-colors: (
+  "coral": (#fff5f5, #fed7d7, #e53e3e),
+  "teal": (#e6fffa, #b2f5ea, #0d9488),
+  "amber": (#fffbeb, #fef3c7, #d97706),
+  "blue": (#f0f9ff, #e0f2fe, #0ea5e9),
+  "violet": (#f5f3ff, #ddd6fe, #7c3aed),
+  "mint": (#ecfdf5, #d1fae5, #059669),
+);
+
+@each $name, $colors in $dynamic-box-colors {
+  $from: nth($colors, 1);
+  $to: nth($colors, 2);
+  $accent: nth($colors, 3);
+
+  .card.bg-dynamic-#{$name} {
+    background: linear-gradient(135deg, $from 0%, $to 100%) !important;
+    border: none !important;
+    border-left: 4px solid $accent !important;
+    color: #1e293b !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    .widget-content-wrapper,
+    .widget-heading,
+    .widget-subheading,
+    .widget-numbers {
+      color: #1e293b !important;
+    }
+
+    .widget-numbers {
+      font-weight: 700;
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+/* Warianty dla innych elementów (dropdown-header, itp.) */
+@each $name, $colors in $dynamic-box-colors {
+  $from: nth($colors, 1);
+  $to: nth($colors, 2);
+  $accent: nth($colors, 3);
+
+  .bg-dynamic-#{$name} {
+    background: linear-gradient(135deg, $from 0%, $to 100%) !important;
+    border-left: 4px solid $accent !important;
+  }
+}

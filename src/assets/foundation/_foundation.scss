@@ -1,0 +1,385 @@
+/* Fundacja Nowyja – strona fundacji, profesjonalny UI/UX */
+@use "sass:color";
+
+// Zmienne
+$fn-primary: #0d9488;
+$fn-primary-hover: #0f766e;
+$fn-text: #334155;
+$fn-text-light: #64748b;
+$fn-heading: #0f172a;
+$fn-bg: #fafafa;
+$fn-bg-alt: #f8fafc;
+$fn-card-bg: #ffffff;
+$fn-border: #e2e8f0;
+
+$fn-coral: #e53e3e;
+$fn-teal: #0d9488;
+$fn-violet: #7c3aed;
+$fn-amber: #d97706;
+$fn-blue: #0ea5e9;
+$fn-mint: #059669;
+
+$fn-radius: 12px;
+$fn-spacing: 1.5rem;
+
+.fn-root {
+  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: $fn-bg;
+  color: $fn-text;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.fn-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 $fn-spacing;
+}
+
+/* Header */
+.fn-header {
+  background: $fn-card-bg;
+  border-bottom: 1px solid $fn-border;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.fn-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 $fn-spacing;
+}
+
+.fn-logo {
+  text-decoration: none;
+  color: $fn-heading;
+  &:hover { color: $fn-heading; }
+}
+
+.fn-logo__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: block;
+}
+
+.fn-logo__tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: $fn-text-light;
+  letter-spacing: 0.08em;
+}
+
+.fn-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  &:focus { outline: 2px solid $fn-primary; outline-offset: 2px; }
+  span {
+    width: 20px;
+    height: 2px;
+    background: $fn-text;
+    border-radius: 1px;
+  }
+}
+
+.fn-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fn-nav__link {
+  color: $fn-text;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+  &:hover { color: $fn-primary; background: rgba($fn-primary, 0.06); }
+  &.fn-nav__link--active {
+    color: $fn-primary;
+    background: rgba($fn-primary, 0.08);
+  }
+  &:focus-visible { outline: 2px solid $fn-primary; outline-offset: 2px; }
+}
+
+@media (max-width: 640px) {
+  .fn-nav-toggle { display: flex; }
+  .fn-nav {
+    position: fixed;
+    top: 0; right: 0;
+    width: min(280px, 85vw);
+    height: 100vh;
+    background: $fn-card-bg;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 5rem 1.5rem 1.5rem;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+  .fn-nav.fn-nav--open { transform: translateX(0); }
+  .fn-nav__link { padding: 0.75rem 1rem; }
+}
+
+/* Main */
+.fn-main { padding-bottom: 3rem; }
+
+/* Hero */
+.fn-hero {
+  padding: 3.5rem $fn-spacing 4rem;
+  text-align: center;
+  background: $fn-card-bg;
+  border-bottom: 1px solid $fn-border;
+}
+
+.fn-hero__title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: $fn-heading;
+  margin: 0 0 0.75rem;
+  line-height: 1.25;
+}
+
+.fn-hero__tagline {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $fn-primary;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem;
+}
+
+.fn-hero__subtitle {
+  font-size: 1rem;
+  color: $fn-text-light;
+  margin: 0 auto 1.5rem;
+  max-width: 32rem;
+  line-height: 1.6;
+}
+
+.fn-btn {
+  display: inline-block;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  &:focus-visible { outline: 2px solid $fn-primary; outline-offset: 2px; }
+}
+
+.fn-btn--primary {
+  background: $fn-primary;
+  color: #fff;
+  border: none;
+  &:hover { background: $fn-primary-hover; color: #fff; }
+}
+
+.fn-btn--outline {
+  background: transparent;
+  color: $fn-primary;
+  border: 2px solid $fn-primary;
+  &:hover { background: rgba($fn-primary, 0.08); }
+}
+
+.fn-btn--lg { padding: 0.75rem 1.75rem; font-size: 1rem; }
+
+/* Sekcje */
+.fn-section {
+  padding: 2.5rem $fn-spacing;
+}
+
+.fn-section--alt {
+  background: $fn-bg-alt;
+}
+
+.fn-section__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $fn-heading;
+  margin: 0 0 1rem;
+}
+
+/* Karty / boxy */
+.fn-box {
+  background: $fn-card-bg;
+  border-radius: $fn-radius;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid $fn-border;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &:hover { border-color: color.adjust($fn-border, $lightness: -6%); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+}
+
+.fn-box--large { padding: 1.5rem 1.75rem; }
+.fn-box--compact { padding: 1rem 1.25rem; }
+
+.fn-box__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $fn-heading;
+  margin: 0 0 0.5rem;
+}
+
+.fn-box__text {
+  color: $fn-text;
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* Kolorowe akcenty – lewa kreska */
+.fn-box--coral { border-left: 4px solid $fn-coral; }
+.fn-box--teal { border-left: 4px solid $fn-teal; }
+.fn-box--violet { border-left: 4px solid $fn-violet; }
+.fn-box--amber { border-left: 4px solid $fn-amber; }
+.fn-box--blue { border-left: 4px solid $fn-blue; }
+.fn-box--mint { border-left: 4px solid $fn-mint; }
+
+.fn-box-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.fn-box-grid--sm {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Strony wewnętrzne */
+.fn-page { padding-top: 2rem; }
+
+.fn-page__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $fn-heading;
+  margin: 0 0 1.5rem;
+}
+
+.fn-mb-4 { margin-bottom: 1.5rem; }
+.fn-mt-4 { margin-top: 1.5rem; }
+.fn-mt-5 { margin-top: 2rem; }
+
+/* Zespół */
+.fn-team-list { margin: 0; padding: 0; list-style: none; }
+
+.fn-team-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid $fn-border;
+  &:last-child { border-bottom: none; }
+}
+
+.fn-team-item__desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: $fn-text-light;
+}
+
+/* Publikacje */
+.fn-pub-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li {
+    padding: 0.4rem 0;
+    a {
+      color: $fn-primary;
+      text-decoration: none;
+      font-weight: 500;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+/* Kontakt */
+.fn-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.fn-contact-link {
+  color: $fn-primary;
+  text-decoration: none;
+  font-weight: 500;
+  &:hover { text-decoration: underline; }
+}
+
+/* CTA */
+.fn-cta {
+  text-align: center;
+  padding: 2.5rem $fn-spacing;
+  background: $fn-card-bg;
+  border-top: 1px solid $fn-border;
+}
+
+.fn-cta__inner { max-width: 520px; margin-left: auto; margin-right: auto; }
+
+.fn-cta__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $fn-heading;
+  margin: 0 0 0.5rem;
+}
+
+.fn-cta__text {
+  margin: 0 0 1.25rem;
+  color: $fn-text;
+}
+
+/* Placeholder – do uzupełnienia */
+.fn-placeholder {
+  padding: 1.5rem;
+  background: rgba($fn-primary, 0.05);
+  border: 1px dashed $fn-border;
+  border-radius: $fn-radius;
+  color: $fn-text-light;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.fn-footer {
+  background: $fn-heading;
+  color: rgba(255,255,255,0.8);
+  padding: 2rem $fn-spacing;
+  margin-top: 2rem;
+}
+
+.fn-footer__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.fn-footer__brand {
+  font-weight: 600;
+  color: #fff;
+}
+
+.fn-footer__contact {
+  font-size: 0.95rem;
+  a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.fn-footer__copy {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+}
