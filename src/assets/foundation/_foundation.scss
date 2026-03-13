@@ -1716,3 +1716,188 @@ html, body {
 .fn-root {
   overflow-x: hidden;
 }
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE NAV PORTAL — rendered directly in <body>
+   Completely outside all stacking contexts
+   ══════════════════════════════════════════════════════════ */
+
+/* Backdrop */
+.fn-mobile-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 32, 64, 0.55);
+  z-index: 99998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.fn-mobile-backdrop--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Nav drawer */
+.fn-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 85vw);
+  background: #ffffff;
+  z-index: 99999;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -8px 0 48px rgba(15, 32, 64, 0.2);
+  overflow-y: auto;
+}
+
+.fn-mobile-nav--open {
+  transform: translateX(0);
+}
+
+.fn-mobile-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  min-height: 72px;
+}
+
+.fn-mobile-nav__close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  color: #334155;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover { background: #e2e8f0; }
+}
+
+.fn-mobile-nav__links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.fn-mobile-nav__link {
+  display: block;
+  padding: 1rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: #eff6ff;
+    color: #1e3a5f;
+  }
+
+  &.fn-mobile-nav__link--active {
+    color: #2563eb;
+    background: #eff6ff;
+    font-weight: 700;
+    border-left: 3px solid #2563eb;
+    padding-left: calc(1.5rem - 3px);
+  }
+}
+
+.fn-mobile-nav__footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Show on mobile only */
+@media (max-width: 768px) {
+  .fn-mobile-backdrop { display: block; }
+  .fn-mobile-nav      { display: flex; }
+
+  /* Hide desktop nav, show hamburger */
+  .fn-nav             { display: none !important; }
+  .fn-nav-toggle      { display: flex !important; }
+}
+
+@media (min-width: 769px) {
+  .fn-nav-toggle      { display: none !important; }
+  .fn-mobile-backdrop { display: none !important; }
+  .fn-mobile-nav      { display: none !important; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROJECT CARDS — mobile-friendly alternative to table
+   ══════════════════════════════════════════════════════════ */
+
+/* Desktop: show table, hide cards */
+.fn-table-wrap--desktop { display: block; }
+.fn-project-cards       { display: none; }
+
+@media (max-width: 768px) {
+  /* Mobile: hide table, show cards */
+  .fn-table-wrap--desktop { display: none !important; }
+  .fn-project-cards       { display: flex; flex-direction: column; gap: 1rem; }
+}
+
+.fn-project-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 2px 8px rgba(30, 58, 95, 0.06);
+}
+
+.fn-project-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.fn-project-card__title {
+  color: #1e3a5f;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.fn-project-card__text {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.fn-project-card__meta {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.fn-project-card__label {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.fn-project-card__value {
+  color: #475569;
+}

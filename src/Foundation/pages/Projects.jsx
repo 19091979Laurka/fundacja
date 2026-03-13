@@ -40,14 +40,16 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* ── PROJECT TABLE ─────────────────────────────────────── */}
+      {/* ── PROJECT CARDS (replaces table — mobile-friendly) ── */}
       <section className="fn-section">
         <div className="fn-container">
           <div className="fn-section__header">
             <span className="fn-section__eyebrow">Aktywne inicjatywy</span>
             <h2 className="fn-section__title">Lista projektów</h2>
           </div>
-          <div className="fn-table-wrap">
+
+          {/* Desktop: table */}
+          <div className="fn-table-wrap fn-table-wrap--desktop">
             <table className="fn-table">
               <thead>
                 <tr>
@@ -79,6 +81,25 @@ export default function Projects() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile: cards */}
+          <div className="fn-project-cards">
+            {items.map((item) => (
+              <div key={item.key ?? item.title} className="fn-project-card">
+                <div className="fn-project-card__top">
+                  <strong className="fn-project-card__title">{item.title}</strong>
+                  {getStatusBadge(item.status)}
+                </div>
+                {item.text && (
+                  <p className="fn-project-card__text">{item.text}</p>
+                )}
+                <div className="fn-project-card__meta">
+                  <span className="fn-project-card__label">Kierunek:</span>
+                  <span className="fn-project-card__value">{getKraj(item)}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

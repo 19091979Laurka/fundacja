@@ -139,12 +139,12 @@ export const branding = {
   presentations: [
     {
       title: "Prezentacja 1",
-      file: "prezentacja-1.pdf",
+      file: "program-transgranicznej-reintegracji.pdf",
       description: "Prezentacja o programie transgranicznej reintegracji.",
     },
     {
       title: "Prezentacja 2",
-      file: "prezentacja-2.pdf",
+      file: "niwyja-reintegration-cbt-veldzicht.pdf",
       description: "Prezentacja o modelu działania i bezpieczeństwie.",
     },
   ],

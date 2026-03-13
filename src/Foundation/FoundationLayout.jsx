@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { branding } from "../config/branding";
 import "../assets/foundation/_foundation.scss";
@@ -33,17 +34,73 @@ export default function FoundationLayout() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  return (
-    <div className="fn-root">
-      <header className={`fn-header${scrolled ? " fn-header--scrolled" : ""}`}>
-        {/* Top bar: logo + hamburger */}
-        <div className="fn-header__inner">
+  // Mobile nav rendered via Portal directly into body — escapes all stacking contexts
+  const mobileNav = createPortal(
+    <>
+      {/* Backdrop */}
+      <div
+        className={`fn-mobile-backdrop${menuOpen ? " fn-mobile-backdrop--visible" : ""}`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden="true"
+      />
+      {/* Nav drawer */}
+      <nav
+        className={`fn-mobile-nav${menuOpen ? " fn-mobile-nav--open" : ""}`}
+        aria-label="Menu mobilne"
+      >
+        <div className="fn-mobile-nav__header">
           <NavLink to="/" className="fn-logo" onClick={() => setMenuOpen(false)}>
             <img src="/logo-nowyja.png" alt={branding.appName} />
           </NavLink>
+          <button
+            className="fn-mobile-nav__close"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Zamknij menu"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="fn-mobile-nav__links">
+          {navItems.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/"}
+              className={({ isActive }) =>
+                "fn-mobile-nav__link" + (isActive ? " fn-mobile-nav__link--active" : "")
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              {label}
+            </NavLink>
+          ))}
+        </div>
+        <div className="fn-mobile-nav__footer">
+          <NavLink
+            to="/kontakt"
+            className="fn-btn fn-btn--primary"
+            style={{ width: "100%", justifyContent: "center", padding: "1rem" }}
+            onClick={() => setMenuOpen(false)}
+          >
+            Skontaktuj się →
+          </NavLink>
+        </div>
+      </nav>
+    </>,
+    document.body
+  );
 
-          {/* Desktop nav — hidden on mobile via CSS */}
-          <nav className="fn-nav fn-nav--desktop" aria-label="Nawigacja główna">
+  return (
+    <div className="fn-root">
+      <header className={`fn-header${scrolled ? " fn-header--scrolled" : ""}`}>
+        <div className="fn-header__inner">
+          {/* Logo */}
+          <NavLink to="/" className="fn-logo">
+            <img src="/logo-nowyja.png" alt={branding.appName} />
+          </NavLink>
+
+          {/* Desktop nav */}
+          <nav className="fn-nav" aria-label="Nawigacja główna">
             {navItems.map(({ to, label }) => (
               <NavLink
                 key={to}
@@ -65,7 +122,7 @@ export default function FoundationLayout() {
             </NavLink>
           </nav>
 
-          {/* Hamburger toggle — visible only on mobile */}
+          {/* Hamburger — mobile only */}
           <button
             className={`fn-nav-toggle${menuOpen ? " fn-nav-toggle--open" : ""}`}
             aria-label={menuOpen ? "Zamknij menu" : "Otwórz menu"}
@@ -77,43 +134,10 @@ export default function FoundationLayout() {
             <span />
           </button>
         </div>
-
-        {/* Mobile nav drawer — rendered inside header but fixed positioned */}
-        <nav
-          className={`fn-nav fn-nav--mobile${menuOpen ? " fn-nav--open" : ""}`}
-          aria-label="Menu mobilne"
-          aria-hidden={!menuOpen}
-        >
-          {navItems.map(({ to, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === "/"}
-              className={({ isActive }) =>
-                "fn-nav__link" + (isActive ? " fn-nav__link--active" : "")
-              }
-            >
-              {label}
-            </NavLink>
-          ))}
-          <NavLink
-            to="/kontakt"
-            className="fn-btn fn-btn--navy fn-btn--mobile-cta"
-            onClick={() => setMenuOpen(false)}
-          >
-            Skontaktuj się →
-          </NavLink>
-        </nav>
-
-        {/* Backdrop overlay */}
-        {menuOpen && (
-          <div
-            className="fn-nav-backdrop"
-            onClick={() => setMenuOpen(false)}
-            aria-hidden="true"
-          />
-        )}
       </header>
+
+      {/* Portal: mobile nav rendered directly in body */}
+      {mobileNav}
 
       <main className="fn-main">
         <Outlet />
