@@ -1,140 +1,179 @@
 import React from "react";
-import { Container, Row, Col, Card, CardBody, CardHeader, Table } from "reactstrap";
 import { branding } from "../../config/branding";
 
 const projects = branding?.projects ?? { items: [] };
 const procedures = branding?.procedures ?? [];
 const presentations = branding?.presentations ?? [];
+const strategy = branding?.strategy ?? {};
+
+const getKraj = (item) => {
+  if (item.key === "transgraniczna") return "Polska – Holandia";
+  if (item.key === "forensiconnect") return "Platforma telemedyczna (EU)";
+  return "—";
+};
+
+const getStatusBadge = (status) => {
+  if (!status) return null;
+  const lower = status.toLowerCase();
+  if (lower.includes("wdrożony") || lower.includes("realizowany")) {
+    return <span className="fn-badge fn-badge--green">{status}</span>;
+  }
+  if (lower.includes("przygotowaniu") || lower.includes("negocjacjach")) {
+    return <span className="fn-badge fn-badge--amber">{status}</span>;
+  }
+  return <span className="fn-badge fn-badge--blue">{status}</span>;
+};
 
 export default function Projects() {
   const items = projects.items ?? [];
 
-  const getKraj = (item) => {
-    if (item.key === "transgraniczna") return "Polska – Holandia";
-    if (item.key === "forensiconnect") return "Platforma telemedyczna (EU)";
-    return "—";
-  };
-
   return (
-    <Container fluid className="mb-4">
-      <Row>
-        <Col>
-          <h1 className="h3 mb-4">Nasze projekty</h1>
-        </Col>
-      </Row>
+    <>
+      {/* ── PAGE HEADER ──────────────────────────────────────── */}
+      <div className="fn-page-header">
+        <div className="fn-page-header__inner">
+          <span className="fn-page-header__eyebrow">Portfolio</span>
+          <h1 className="fn-page-header__title">Nasze projekty</h1>
+          <p className="fn-page-header__subtitle">
+            Kompleksowe programy reintegracji i innowacyjne platformy telemedyczne — na skalę europejską.
+          </p>
+        </div>
+      </div>
 
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>Lista projektów</CardHeader>
-            <CardBody className="p-0">
-              <Table responsive hover className="mb-0">
-                <thead>
-                  <tr>
-                    <th>Projekt</th>
-                    <th>Status</th>
-                    <th>Kierunek</th>
+      {/* ── PROJECT TABLE ─────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Aktywne inicjatywy</span>
+            <h2 className="fn-section__title">Lista projektów</h2>
+          </div>
+          <div className="fn-table-wrap">
+            <table className="fn-table">
+              <thead>
+                <tr>
+                  <th>Projekt</th>
+                  <th>Status</th>
+                  <th>Kierunek</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr key={item.key ?? item.title}>
+                    <td>
+                      <strong style={{ color: "#fff", display: "block", marginBottom: "0.35rem" }}>
+                        {item.title}
+                      </strong>
+                      {item.text && (
+                        <span style={{ fontSize: "0.85rem", color: "#94a3b8", lineHeight: 1.6 }}>
+                          {item.text}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ whiteSpace: "nowrap" }}>
+                      {getStatusBadge(item.status)}
+                    </td>
+                    <td style={{ color: "#94a3b8", whiteSpace: "nowrap" }}>
+                      {getKraj(item)}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {items.map((item) => (
-                    <tr key={item.key ?? item.title}>
-                      <td>
-                        <strong>{item.title}</strong>
-                        {item.text && (
-                          <p className="small text-muted mb-0 mt-1">{item.text}</p>
-                        )}
-                      </td>
-                      <td>
-                        <span className="badge bg-primary">{item.status}</span>
-                      </td>
-                      <td>{getKraj(item)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Zakładka 4: Procedury i model działania (Ścieżka pacjenta) */}
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>{projects.modelTitle ?? "Procedury i model działania (Ścieżka pacjenta)"}</CardHeader>
-            <CardBody>
-              {projects.modelDescription && (
-                <p className="mb-4">{projects.modelDescription}</p>
-              )}
-              <Row>
-                {procedures.map((step, i) => (
-                  <Col key={step.title} md="4">
-                    <Card className="mb-3 border">
-                      <CardHeader className="bg-light py-2">
-                        <span className="badge bg-primary me-2">{i + 1}</span>
-                        {step.title}
-                      </CardHeader>
-                      <CardBody className="py-3">
-                        <p className="small mb-0">{step.text}</p>
-                      </CardBody>
-                    </Card>
-                  </Col>
                 ))}
-              </Row>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-      {presentations.length > 0 && (
-        <Row>
-          <Col>
-            <Card className="mb-4">
-              <CardHeader>Materiały i prezentacje</CardHeader>
-              <CardBody>
-                <p className="text-muted small mb-3">
-                  Prezentacje do pobrania w formacie PDF.
-                </p>
-                <div className="d-flex flex-wrap gap-3">
-                  {presentations.map((item) => (
-                    <a
-                      key={item.file}
-                      href={`${process.env.PUBLIC_URL || ""}/documents/${item.file}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-outline-primary d-inline-flex align-items-center"
-                    >
-                      <span className="me-2">📄</span>
-                      {item.title}
-                    </a>
-                  ))}
+      {/* ── PATIENT PATH ─────────────────────────────────────── */}
+      <section className="fn-section">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Model działania</span>
+            <h2 className="fn-section__title">
+              {projects.modelTitle ?? "Procedury i model działania (Ścieżka pacjenta)"}
+            </h2>
+            {projects.modelDescription && (
+              <p className="fn-section__lead">{projects.modelDescription}</p>
+            )}
+          </div>
+          <div className="fn-steps">
+            {procedures.map((step, i) => (
+              <div key={step.title} className="fn-step">
+                <div className="fn-step__number">{i + 1}</div>
+                <h3 className="fn-step__title">{step.title}</h3>
+                <p className="fn-step__text">{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── STRATEGY ─────────────────────────────────────────── */}
+      {strategy.horizon && (
+        <section className="fn-section fn-section--dark">
+          <div className="fn-container">
+            <div className="fn-section__header">
+              <span className="fn-section__eyebrow">Strategia</span>
+              <h2 className="fn-section__title">Horyzont finansowania</h2>
+              <p className="fn-section__lead">{strategy.horizon}</p>
+            </div>
+            <div className="fn-feature-grid">
+              {(strategy.goals ?? []).map((goal, i) => (
+                <div key={i} className="fn-feature">
+                  <div className="fn-feature__icon">{i === 0 ? "🇪🇺" : "💶"}</div>
+                  <p className="fn-feature__text">{goal}</p>
                 </div>
-                {presentations.some((p) => p.description) && (
-                  <ul className="list-unstyled mt-3 mb-0 small text-muted">
-                    {presentations.map((item) => (
-                      <li key={item.file}>
-                        <strong>{item.title}:</strong> {item.description}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
 
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>Partnerzy systemowi</CardHeader>
-            <CardBody>
-              <p className="mb-0">{branding?.pages?.partners}</p>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+      {/* ── PRESENTATIONS ────────────────────────────────────── */}
+      {presentations.length > 0 && (
+        <section className="fn-section">
+          <div className="fn-container">
+            <div className="fn-section__header">
+              <span className="fn-section__eyebrow">Dokumenty</span>
+              <h2 className="fn-section__title">Materiały i prezentacje</h2>
+              <p className="fn-section__lead">Prezentacje do pobrania w formacie PDF.</p>
+            </div>
+            <div className="fn-doc-grid">
+              {presentations.map((item) => (
+                <a
+                  key={item.file}
+                  href={`/documents/${item.file}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="fn-doc-card"
+                >
+                  <span className="fn-doc-card__icon">📄</span>
+                  <div>
+                    <p className="fn-doc-card__title">{item.title}</p>
+                    {item.description && (
+                      <p className="fn-doc-card__desc">{item.description}</p>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── PARTNERS ─────────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Sieć</span>
+            <h2 className="fn-section__title">Partnerzy systemowi</h2>
+          </div>
+          <div className="fn-goal-banner">
+            <p className="fn-goal-banner__text" style={{ margin: 0 }}>
+              {branding?.pages?.partners}
+            </p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { Container, Row, Col, Card, CardBody, CardHeader } from "reactstrap";
 import { branding } from "../../config/branding";
 
 const about = branding?.pages?.about ?? {};
@@ -8,104 +7,128 @@ const safety = branding?.safety ?? {};
 
 export default function About() {
   return (
-    <Container fluid className="mb-4">
-      <Row>
-        <Col>
-          <h1 className="h3 mb-4">O fundacji</h1>
-        </Col>
-      </Row>
+    <>
+      {/* ── PAGE HEADER ──────────────────────────────────────── */}
+      <div className="fn-page-header">
+        <div className="fn-page-header__inner">
+          <span className="fn-page-header__eyebrow">Fundacja NOWY JA</span>
+          <h1 className="fn-page-header__title">O fundacji</h1>
+          <p className="fn-page-header__subtitle">
+            Pionierska organizacja systemowa w obszarze psychiatrii sądowej — łącząca opiekę kliniczną,
+            nadzór prawny i współpracę międzynarodową.
+          </p>
+        </div>
+      </div>
 
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>Kim jesteśmy?</CardHeader>
-            <CardBody>
-              <p className="mb-0">{about.whoWeAre}</p>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+      {/* ── KIM JESTEŚMY ─────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+            <div className="fn-accent-box">
+              <h2 className="fn-accent-box__title">Kim jesteśmy?</h2>
+              <p className="fn-accent-box__text">{about.whoWeAre}</p>
+            </div>
+            <div className="fn-accent-box fn-accent-box--gold">
+              <h2 className="fn-accent-box__title">Nasz cel</h2>
+              <p className="fn-accent-box__text">{about.ourGoal}</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>Nasz cel</CardHeader>
-            <CardBody>
-              <p className="mb-0">{about.ourGoal}</p>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+      {/* ── TEAM ─────────────────────────────────────────────── */}
+      <section className="fn-section">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Eksperci</span>
+            <h2 className="fn-section__title">Nasz zespół</h2>
+          </div>
+          <div className="fn-team-grid">
+            {team.map((person) => {
+              const initials = person.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .slice(0, 2);
+              return (
+                <div key={person.name} className="fn-team-card">
+                  <div className="fn-team-card__avatar">{initials}</div>
+                  <h3 className="fn-team-card__name">{person.name}</h3>
+                  <p className="fn-team-card__role">{person.role}</p>
+                  {person.desc && (
+                    <p className="fn-team-card__desc">{person.desc}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader>Nasz zespół</CardHeader>
-            <CardBody>
-              <Row>
-                {team.map((person) => (
-                  <Col key={person.name} md="4" className="mb-4">
-                    <h6 className="mb-1">{person.name}</h6>
-                    <p className="small text-primary mb-1">{person.role}</p>
-                    {person.desc && (
-                      <p className="small text-muted mb-0">{person.desc}</p>
-                    )}
-                  </Col>
-                ))}
-              </Row>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
+      {/* ── PARTNERZY ────────────────────────────────────────── */}
       {branding?.pages?.partners && (
-        <Row>
-          <Col>
-            <Card className="mb-4">
-              <CardHeader>Partnerzy</CardHeader>
-              <CardBody>
-                <p className="mb-0">{branding.pages.partners}</p>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <section className="fn-section fn-section--dark">
+          <div className="fn-container">
+            <div className="fn-section__header">
+              <span className="fn-section__eyebrow">Współpraca</span>
+              <h2 className="fn-section__title">Partnerzy systemowi</h2>
+            </div>
+            <div className="fn-goal-banner">
+              <p className="fn-goal-banner__text" style={{ margin: 0 }}>
+                {branding.pages.partners}
+              </p>
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* Zakładka 5: Bezpieczeństwo publiczne i zarządzanie ryzykiem */}
+      {/* ── BEZPIECZEŃSTWO ───────────────────────────────────── */}
       {safety.intro && (
-        <Row>
-          <Col>
-            <Card className="mb-4">
-              <CardHeader>Bezpieczeństwo publiczne i zarządzanie ryzykiem</CardHeader>
-              <CardBody>
-                <p className="mb-4">{safety.intro}</p>
-                {safety.riskManagement?.title && (
-                  <>
-                    <h6 className="mb-2">{safety.riskManagement.title}</h6>
-                    <p className="mb-4">{safety.riskManagement.text}</p>
-                  </>
-                )}
-                {safety.escapeProcedures?.title && (
-                  <>
-                    <h6 className="mb-2">{safety.escapeProcedures.title}</h6>
-                    <p className="mb-2">{safety.escapeProcedures.text}</p>
-                    {safety.escapeProcedures.steps?.length > 0 && (
-                      <ol className="ps-3 mb-4">
-                        {safety.escapeProcedures.steps.map((step, i) => (
-                          <li key={i} className="mb-1">{step}</li>
-                        ))}
-                      </ol>
-                    )}
-                  </>
-                )}
-                {safety.reporting && (
-                  <p className="mb-0"><strong>Raportowanie:</strong> {safety.reporting}</p>
-                )}
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <section className="fn-section">
+          <div className="fn-container">
+            <div className="fn-section__header">
+              <span className="fn-section__eyebrow">Priorytet</span>
+              <h2 className="fn-section__title">Bezpieczeństwo publiczne i zarządzanie ryzykiem</h2>
+              <p className="fn-section__lead">{safety.intro}</p>
+            </div>
+
+            <div className="fn-feature-grid">
+              {safety.riskManagement?.title && (
+                <div className="fn-feature">
+                  <div className="fn-feature__icon">🛡</div>
+                  <h3 className="fn-feature__title">{safety.riskManagement.title}</h3>
+                  <p className="fn-feature__text">{safety.riskManagement.text}</p>
+                </div>
+              )}
+
+              {safety.escapeProcedures?.title && (
+                <div className="fn-feature">
+                  <div className="fn-feature__icon">🚨</div>
+                  <h3 className="fn-feature__title">{safety.escapeProcedures.title}</h3>
+                  <p className="fn-feature__text" style={{ marginBottom: "0.75rem" }}>
+                    {safety.escapeProcedures.text}
+                  </p>
+                  {safety.escapeProcedures.steps?.length > 0 && (
+                    <ul className="fn-safety-steps">
+                      {safety.escapeProcedures.steps.map((step, i) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
+              {safety.reporting && (
+                <div className="fn-feature">
+                  <div className="fn-feature__icon">📋</div>
+                  <h3 className="fn-feature__title">Raportowanie</h3>
+                  <p className="fn-feature__text">{safety.reporting}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
       )}
-    </Container>
+    </>
   );
 }

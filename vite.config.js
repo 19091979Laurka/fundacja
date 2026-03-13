@@ -44,9 +44,10 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
   },
   server: {
-    port: 3001,
+    port: 3000,
     host: true,
-    open: true,
+    open: false,
+    allowedHosts: 'all',
   },
   build: {
     outDir: 'build',

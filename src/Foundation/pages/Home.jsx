@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, CardBody, CardHeader } from "reactstrap";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+} from "recharts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -30,185 +31,237 @@ const locations = [
   { position: [52.55, 19.71], name: "Płock", desc: "Centrum operacyjne, adaptacja" },
 ];
 
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{
+        background: "#0f2040",
+        border: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: "10px",
+        padding: "0.75rem 1rem",
+        fontSize: "0.85rem",
+        color: "#e2e8f0",
+      }}>
+        <p style={{ margin: "0 0 0.4rem", fontWeight: 700, color: "#fff" }}>{label}</p>
+        {payload.map((entry) => (
+          <p key={entry.name} style={{ margin: "0.2rem 0", color: entry.color }}>
+            {entry.name}: <strong>{entry.value}</strong>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function Home() {
   const stats = home.stats ?? [];
   const steps = home.steps ?? [];
 
   return (
-    <Container fluid className="mb-4">
-      {/* Hero – jeden boks */}
-      <Row>
-        <Col>
-          <Card className="mb-3">
-            <CardBody className="text-center py-5">
-              <h1 className="h3 mb-2">{home.heroTitle ?? branding?.appName}</h1>
-              <p className="text-muted mb-3">{home.heroSubtitle}</p>
-              <p className="small text-uppercase fw-bold text-primary">{branding?.tagline}</p>
-              <Link to="/projekty" className="btn btn-primary btn-lg">
-                Zobacz projekty międzynarodowe
-              </Link>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    <>
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="fn-hero">
+        <div className="fn-hero__bg" />
+        <div className="fn-hero__overlay" />
+        <div className="fn-hero__content">
+          <div className="fn-hero__badge">
+            ⚖ {branding.tagline}
+          </div>
+          <h1 className="fn-hero__title">
+            Fundacja<br />
+            <span>NOWY JA</span>
+          </h1>
+          <p className="fn-hero__subtitle">
+            {home.heroSubtitle}
+          </p>
+          <div className="fn-hero__actions">
+            <Link to="/projekty" className="fn-btn fn-btn--primary fn-btn--lg">
+              Zobacz projekty
+            </Link>
+            <Link to="/o-nas" className="fn-btn fn-btn--outline fn-btn--lg">
+              O fundacji
+            </Link>
+          </div>
+        </div>
+        <div className="fn-hero__scroll">
+          <span>Przewiń</span>
+          <div className="fn-hero__scroll-line" />
+        </div>
+      </section>
 
-      {/* Liczniki – 3 kolorowe boksy */}
-      <Row>
-        {stats.map((item, i) => (
-          <Col key={item.label} md="6" xl="4">
-            <div
-              className={`card mb-3 widget-content text-white ${
-                ["bg-foundation-1", "bg-foundation-2", "bg-foundation-3"][i % 3]
-              }`}
-            >
-              <div className="widget-content-wrapper">
-                <div className="widget-content-left">
-                  <div className="widget-heading">{item.label}</div>
-                  <div className="widget-subheading">{item.detail}</div>
-                </div>
-                <div className="widget-content-right">
-                  <div className="widget-numbers text-white">
-                    {String(item.value).includes("+") ? (
-                      <CountUp end={25} duration={2} suffix="+" />
-                    ) : (
-                      <CountUp end={parseInt(item.value, 10) || 0} duration={2} />
-                    )}
-                  </div>
-                </div>
-              </div>
+      {/* ── STAT STRIP ───────────────────────────────────────── */}
+      <div className="fn-stat-strip">
+        <div className="fn-stat-strip__inner">
+          {stats.map((item) => (
+            <div key={item.label} className="fn-stat-item">
+              <span className="fn-stat-item__number">
+                {String(item.value).includes("+") ? (
+                  <CountUp end={25} duration={2.5} suffix="+" />
+                ) : (
+                  <CountUp end={parseInt(item.value, 10) || 0} duration={2.5} />
+                )}
+              </span>
+              <span className="fn-stat-item__label">{item.label}</span>
+              <span className="fn-stat-item__detail">{item.detail}</span>
             </div>
-          </Col>
-        ))}
-      </Row>
+          ))}
+        </div>
+      </div>
 
-      {/* Jak to działa – 3 boksy */}
-      <Row>
-        <Col><h5 className="mb-3">Jak to działa</h5></Col>
-      </Row>
-      <Row>
-        {steps.map((step, i) => (
-          <Col key={step.title} md="4">
-            <Card className="mb-3">
-              <CardHeader className="bg-light">
-                <span className="badge bg-primary me-2">{i + 1}</span>
-                {step.title}
-              </CardHeader>
-              <CardBody>
-                <p className="mb-0 small">{step.text}</p>
-              </CardBody>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-
-      {/* Wyniki – wykres */}
-      <Row>
-        <Col>
-          <Card className="mb-3">
-            <CardHeader>Wyniki programu</CardHeader>
-            <CardBody>
-              <div style={{ height: 260 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                    <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip />
-                    <Bar dataKey="transfery" fill="#0d9488" name="Transfery" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="wTrakcie" fill="#7c3aed" name="W trakcie" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="liczba" fill="#0ea5e9" name="Źródła" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+      {/* ── HOW IT WORKS ─────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Proces</span>
+            <h2 className="fn-section__title">Jak to działa</h2>
+            <p className="fn-section__lead">
+              Trzyetapowy, rygorystyczny model transferu i reintegracji pacjentów psychiatrycznych.
+            </p>
+          </div>
+          <div className="fn-steps">
+            {steps.map((step, i) => (
+              <div key={step.title} className="fn-step">
+                <div className="fn-step__number">{i + 1}</div>
+                <h3 className="fn-step__title">{step.title}</h3>
+                <p className="fn-step__text">{step.text}</p>
               </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* Mapa */}
-      <Row>
-        <Col>
-          <Card className="mb-3">
-            <CardHeader>Gdzie działamy</CardHeader>
-            <CardBody className="p-0">
-              <div style={{ height: 320 }}>
-                <MapContainer
-                  center={mapCenter}
-                  zoom={6}
-                  style={{ height: "100%", width: "100%" }}
-                  scrollWheelZoom={true}
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      {/* ── RESULTS CHART ────────────────────────────────────── */}
+      <section className="fn-section">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Dane</span>
+            <h2 className="fn-section__title">Wyniki programu</h2>
+          </div>
+          <div className="fn-chart-card">
+            <div className="fn-chart-card__title">Aktywność programowa</div>
+            <div style={{ height: 300 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#94a3b8" }} />
+                  <YAxis tick={{ fontSize: 12, fill: "#94a3b8" }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend
+                    wrapperStyle={{ fontSize: "0.82rem", color: "#94a3b8", paddingTop: "1rem" }}
                   />
-                  {locations.map((loc) => (
-                    <Marker key={loc.name} position={loc.position}>
-                      <Popup>
-                        <strong>{loc.name}</strong>
-                        <br />
-                        {loc.desc}
-                      </Popup>
-                    </Marker>
-                  ))}
-                </MapContainer>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+                  <Bar dataKey="transfery" fill="#0d9488" name="Transfery" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="wTrakcie" fill="#7c3aed" name="W trakcie" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="liczba" fill="#c9a84c" name="Źródła finansowania" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Nasz cel – jeden boks */}
+      {/* ── MAP ──────────────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Zasięg</span>
+            <h2 className="fn-section__title">Gdzie działamy</h2>
+            <p className="fn-section__lead">
+              Aktywne lokalizacje programu w Polsce — Warszawa i Płock.
+            </p>
+          </div>
+          <div className="fn-map-card">
+            <div className="fn-map-card__header">Mapa operacyjna</div>
+            <div style={{ height: 380 }}>
+              <MapContainer
+                center={mapCenter}
+                zoom={6}
+                style={{ height: "100%", width: "100%" }}
+                scrollWheelZoom={false}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {locations.map((loc) => (
+                  <Marker key={loc.name} position={loc.position}>
+                    <Popup>
+                      <strong>{loc.name}</strong>
+                      <br />
+                      {loc.desc}
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MISSION / GOAL ───────────────────────────────────── */}
       {home.ourGoal && (
-        <Row>
-          <Col>
-            <Card className="mb-3 border-primary">
-              <CardHeader className="bg-primary text-white">Nasz cel</CardHeader>
-              <CardBody>
-                <p className="mb-3">{home.ourGoal}</p>
-                <Link to="/o-nas" className="btn btn-outline-primary">
-                  Więcej o fundacji
-                </Link>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <section className="fn-section">
+          <div className="fn-container">
+            <div className="fn-goal-banner">
+              <span className="fn-section__eyebrow" style={{ marginBottom: "0.75rem", display: "block" }}>
+                Misja
+              </span>
+              <h2 className="fn-goal-banner__title">Nasz cel</h2>
+              <p className="fn-goal-banner__text">{home.ourGoal}</p>
+              <Link to="/o-nas" className="fn-btn fn-btn--outline">
+                Więcej o fundacji →
+              </Link>
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* Zespół – 3 boksy */}
-      <Row>
-        <Col><h5 className="mb-3">Zespół programowy</h5></Col>
-      </Row>
-      <Row>
-        {team.map((person) => (
-          <Col key={person.name} md="4">
-            <Card className="mb-3">
-              <CardBody>
-                <h6 className="mb-1">{person.name}</h6>
-                <p className="small text-primary mb-1">{person.role}</p>
-                {person.desc && <p className="small text-muted mb-0">{person.desc}</p>}
-              </CardBody>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      {/* ── TEAM ─────────────────────────────────────────────── */}
+      <section className="fn-section fn-section--dark">
+        <div className="fn-container">
+          <div className="fn-section__header">
+            <span className="fn-section__eyebrow">Ludzie</span>
+            <h2 className="fn-section__title">Zespół programowy</h2>
+            <p className="fn-section__lead">
+              Eksperci z dziedziny psychiatrii, prawa i psychologii — tworzący unikalne rozwiązania systemowe.
+            </p>
+          </div>
+          <div className="fn-team-grid">
+            {team.map((person) => {
+              const initials = person.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .slice(0, 2);
+              return (
+                <div key={person.name} className="fn-team-card">
+                  <div className="fn-team-card__avatar">{initials}</div>
+                  <h3 className="fn-team-card__name">{person.name}</h3>
+                  <p className="fn-team-card__role">{person.role}</p>
+                  {person.desc && (
+                    <p className="fn-team-card__desc">{person.desc}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-      {/* CTA */}
-      <Row>
-        <Col>
-          <Card className="mb-3 bg-light">
-            <CardBody className="text-center py-4">
-              <h5 className="mb-2">Masz sprawę pacjenta wymagającą transferu do Polski?</h5>
-              <p className="text-muted mb-3">
-                Skontaktuj się z nami – odpowiadamy na zapytania rodzin, szpitali, pełnomocników i instytucji.
-              </p>
-              <Link to="/kontakt" className="btn btn-primary btn-lg">
-                Skontaktuj się z Biurem Koordynatora
-              </Link>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+      {/* ── CTA ──────────────────────────────────────────────── */}
+      <section className="fn-cta-section">
+        <div className="fn-cta-section__inner">
+          <h2 className="fn-cta-section__title">
+            Masz sprawę pacjenta wymagającą transferu do Polski?
+          </h2>
+          <p className="fn-cta-section__text">
+            Skontaktuj się z nami — odpowiadamy na zapytania rodzin, szpitali, pełnomocników i instytucji.
+          </p>
+          <Link to="/kontakt" className="fn-btn fn-btn--gold fn-btn--lg">
+            Skontaktuj się z Biurem Koordynatora
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
