@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { branding } from "../config/branding";
 import "../assets/foundation/_foundation.scss";
 
@@ -13,32 +13,37 @@ const navItems = [
 export default function FoundationLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
+  // Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location]);
+
+  // Scroll listener
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   return (
     <div className="fn-root">
-      <header className="fn-header" style={scrolled ? { boxShadow: "0 2px 20px rgba(30,58,95,0.1)" } : {}}>
+      <header className={`fn-header${scrolled ? " fn-header--scrolled" : ""}`}>
+        {/* Top bar: logo + hamburger */}
         <div className="fn-header__inner">
           <NavLink to="/" className="fn-logo" onClick={() => setMenuOpen(false)}>
             <img src="/logo-nowyja.png" alt={branding.appName} />
           </NavLink>
 
-          <button
-            className="fn-nav-toggle"
-            aria-label="Menu"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-
-          <nav className={`fn-nav ${menuOpen ? "fn-nav--open" : ""}`}>
+          {/* Desktop nav — hidden on mobile via CSS */}
+          <nav className="fn-nav fn-nav--desktop" aria-label="Nawigacja główna">
             {navItems.map(({ to, label }) => (
               <NavLink
                 key={to}
@@ -47,7 +52,6 @@ export default function FoundationLayout() {
                 className={({ isActive }) =>
                   "fn-nav__link" + (isActive ? " fn-nav__link--active" : "")
                 }
-                onClick={() => setMenuOpen(false)}
               >
                 {label}
               </NavLink>
@@ -56,12 +60,59 @@ export default function FoundationLayout() {
               to="/kontakt"
               className="fn-btn fn-btn--navy"
               style={{ marginLeft: "0.75rem", padding: "0.5rem 1.25rem", fontSize: "0.85rem" }}
-              onClick={() => setMenuOpen(false)}
             >
               Kontakt
             </NavLink>
           </nav>
+
+          {/* Hamburger toggle — visible only on mobile */}
+          <button
+            className={`fn-nav-toggle${menuOpen ? " fn-nav-toggle--open" : ""}`}
+            aria-label={menuOpen ? "Zamknij menu" : "Otwórz menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
+
+        {/* Mobile nav drawer — rendered inside header but fixed positioned */}
+        <nav
+          className={`fn-nav fn-nav--mobile${menuOpen ? " fn-nav--open" : ""}`}
+          aria-label="Menu mobilne"
+          aria-hidden={!menuOpen}
+        >
+          {navItems.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/"}
+              className={({ isActive }) =>
+                "fn-nav__link" + (isActive ? " fn-nav__link--active" : "")
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+          <NavLink
+            to="/kontakt"
+            className="fn-btn fn-btn--navy fn-btn--mobile-cta"
+            onClick={() => setMenuOpen(false)}
+          >
+            Skontaktuj się →
+          </NavLink>
+        </nav>
+
+        {/* Backdrop overlay */}
+        {menuOpen && (
+          <div
+            className="fn-nav-backdrop"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
       </header>
 
       <main className="fn-main">

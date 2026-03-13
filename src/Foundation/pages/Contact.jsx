@@ -57,19 +57,18 @@ export default function Contact() {
       {/* ── CONTACT FORM ─────────────────────────────────────── */}
       <section className="fn-section">
         <div className="fn-container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
+          <div className="fn-contact-form-grid">
             {/* Left: info */}
-            <div>
+            <div className="fn-contact-form-grid__info">
               <span className="fn-section__eyebrow">Formularz</span>
-              <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+              <h2 className="fn-section__title fn-section__title--left">
                 Wyślij zapytanie
               </h2>
-              <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
+              <p className="fn-split-grid__body">
                 Nasz zespół odpowiada na zapytania dotyczące transferów psychiatrycznych,
                 procedur prawnych i możliwości współpracy instytucjonalnej.
               </p>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginTop: "1.5rem" }}>
                 <div className="fn-accent-box">
                   <h4 className="fn-accent-box__title">⏱ Czas odpowiedzi</h4>
                   <p className="fn-accent-box__text">Odpowiadamy w ciągu 24–48 godzin roboczych.</p>
@@ -82,7 +81,7 @@ export default function Contact() {
             </div>
 
             {/* Right: form */}
-            <div>
+            <div className="fn-contact-form-grid__form">
               {sent ? (
                 <div className="fn-goal-banner" style={{ textAlign: "center" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>✅</div>

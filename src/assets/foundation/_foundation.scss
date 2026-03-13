@@ -1201,7 +1201,8 @@ $fn-shadow-lg:   0 12px 48px rgba(30, 58, 95, 0.14);
 }
 
 /* ── Responsive ─────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
+  /* Tablet: collapse 2-col grids to 1 col */
   .fn-hero__content {
     grid-template-columns: 1fr;
     gap: 2.5rem;
@@ -1210,15 +1211,14 @@ $fn-shadow-lg:   0 12px 48px rgba(30, 58, 95, 0.14);
 
   .fn-hero__media {
     order: -1;
-
     img { height: 320px; }
-
     &::before { display: none; }
     &::after  { display: none; }
   }
 }
 
 @media (max-width: 768px) {
+  /* ── Mobile nav toggle ── */
   .fn-nav-toggle { display: flex; }
 
   .fn-nav {
@@ -1229,23 +1229,72 @@ $fn-shadow-lg:   0 12px 48px rgba(30, 58, 95, 0.14);
     bottom: 0;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
     align-items: stretch;
     padding: 1.5rem;
     gap: 0.5rem;
     transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 199;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
     box-shadow: $fn-shadow-lg;
+    overflow-y: auto;
   }
 
   .fn-nav.fn-nav--open { transform: translateX(0); }
 
   .fn-nav__link {
     padding: 1rem 1.25rem;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    border-radius: $fn-radius-sm;
+    border-bottom: 1px solid $fn-border;
+
+    &:last-of-type { border-bottom: none; }
   }
 
+  /* CTA button in mobile nav */
+  .fn-nav .fn-btn--navy {
+    margin: 0.75rem 0 0 !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1rem !important;
+    text-align: center;
+    justify-content: center;
+    border-radius: $fn-radius-sm;
+  }
+
+  /* ── Header ── */
+  .fn-header { z-index: 10000; }
+
+  /* ── Hero ── */
+  .fn-hero {
+    min-height: auto;
+  }
+
+  .fn-hero__content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 5rem 1.25rem 3rem;
+  }
+
+  .fn-hero__media {
+    order: -1;
+    img { height: 240px; }
+    &::before, &::after { display: none; }
+  }
+
+  .fn-hero__title { font-size: clamp(1.9rem, 8vw, 2.8rem); }
+  .fn-hero__subtitle { font-size: 0.95rem; }
+
+  .fn-hero__actions {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .fn-btn { width: 100%; justify-content: center; }
+  }
+
+  .fn-hero__scroll { display: none; }
+
+  /* ── Stat strip ── */
   .fn-stat-strip__inner {
     grid-template-columns: 1fr;
   }
@@ -1253,21 +1302,122 @@ $fn-shadow-lg:   0 12px 48px rgba(30, 58, 95, 0.14);
   .fn-stat-item {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 1.5rem 1.25rem;
 
     &:last-child { border-bottom: none; }
   }
 
-  .fn-hero__content { padding: 5rem 1.5rem 3rem; }
+  /* ── General layout ── */
   .fn-container { padding: 0 1.25rem; }
-  .fn-section { padding: 3.5rem 0; }
+  .fn-section { padding: 3rem 0; }
+  .fn-section--alt { padding: 3rem 0; }
   .fn-card { padding: 1.5rem; }
-  .fn-goal-banner { padding: 2rem; }
+  .fn-goal-banner { padding: 1.75rem 1.5rem; }
 
-  .fn-footer__grid {
+  /* ── 2-column grids → 1 column on mobile ── */
+  /* Home: Mission split */
+  .fn-section .fn-container > div[style*="grid-template-columns: 1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  /* About: Kim jesteśmy boxes */
+  .fn-section .fn-container > div[style*="grid-template-columns: 1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Projects: Strategy split */
+  .fn-section .fn-container > div[style*="grid-template-columns: 1fr 1fr"] img {
+    height: 220px !important;
+  }
+
+  /* Contact: Form split */
+  .fn-section .fn-container > div[style*="grid-template-columns: 1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .fn-form {
+    padding: 1.75rem 1.25rem;
+    max-width: 100%;
+  }
+
+  /* ── Tables ── */
+  .fn-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fn-table {
+    min-width: 500px;
+
+    th, td { padding: 0.9rem 1rem; }
+  }
+
+  /* ── Steps ── */
+  .fn-steps {
     grid-template-columns: 1fr;
   }
 
-  .fn-footer__contact { text-align: left; }
+  /* ── Team grid ── */
+  .fn-team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Feature grid ── */
+  .fn-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Contact grid ── */
+  .fn-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Doc grid ── */
+  .fn-doc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Page header ── */
+  .fn-page-header {
+    padding: 3.5rem 0 2.5rem;
+  }
+
+  .fn-page-header__title { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  .fn-page-header__subtitle { font-size: 0.92rem; }
+
+  /* ── Section header ── */
+  .fn-section__title { font-size: clamp(1.5rem, 6vw, 2rem); }
+
+  /* ── Footer ── */
+  .fn-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .fn-footer__contact {
+    text-align: left;
+  }
+
+  /* ── CTA ── */
+  .fn-cta-section { padding: 3.5rem 0; }
+
+  .fn-cta-section__inner .fn-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── Highlight strip ── */
+  .fn-highlight-strip {
+    font-size: 0.82rem;
+    padding: 1rem 1.25rem;
+    line-height: 1.6;
+  }
 }
 
 /* ── Leaflet overrides ──────────────────────────────────── */
@@ -1337,4 +1487,232 @@ $fn-shadow-lg:   0 12px 48px rgba(30, 58, 95, 0.14);
 .fn-form__textarea {
   min-height: 140px;
   resize: vertical;
+}
+
+/* ── Split Grid (2-col: text + image) ───────────────────── */
+.fn-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.fn-split-grid__text {
+  /* left column */
+}
+
+.fn-split-grid__body {
+  font-size: 1rem;
+  color: $fn-text-muted;
+  line-height: 1.75;
+  margin: 0 0 2rem;
+}
+
+.fn-split-grid__media {
+  position: relative;
+}
+
+.fn-split-grid__img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: $fn-shadow-lg;
+  display: block;
+}
+
+.fn-split-grid__accent {
+  position: absolute;
+  top: 24px;
+  width: 6px;
+  height: calc(100% - 48px);
+  background: $fn-blue;
+  border-radius: 3px;
+
+  &--left  { left: -12px; }
+  &--right { right: -10px; }
+}
+
+/* ── Two-col grid (equal boxes) ─────────────────────────── */
+.fn-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* ── Contact form grid ──────────────────────────────────── */
+.fn-contact-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.fn-contact-form-grid__info { /* left */ }
+.fn-contact-form-grid__form { /* right */ }
+
+/* ── Section title left-aligned variant ─────────────────── */
+.fn-section__title--left {
+  text-align: left;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Accent box navy variant ────────────────────────────── */
+.fn-accent-box--navy { border-left-color: $fn-navy; }
+
+/* ── Header scrolled state ──────────────────────────────── */
+.fn-header--scrolled {
+  box-shadow: 0 2px 20px rgba(30, 58, 95, 0.1);
+}
+
+/* ── Nav backdrop (mobile overlay) ─────────────────────── */
+.fn-nav-backdrop {
+  display: none;
+}
+
+/* ── Hamburger → X animation ────────────────────────────── */
+.fn-nav-toggle {
+  span {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+}
+
+.fn-nav-toggle--open {
+  span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+/* ── Mobile overrides for new classes ───────────────────── */
+@media (max-width: 768px) {
+  .fn-split-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .fn-split-grid__media {
+    order: -1;
+  }
+
+  .fn-split-grid__img {
+    height: 220px;
+  }
+
+  .fn-split-grid__accent {
+    display: none;
+  }
+
+  .fn-two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .fn-contact-form-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .fn-form {
+    padding: 1.75rem 1.25rem;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .fn-nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 9998;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+/* ── Nav variants: desktop vs mobile ───────────────────── */
+
+/* Desktop nav: always visible, horizontal */
+.fn-nav--desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Mobile nav: hidden by default, full-screen drawer */
+.fn-nav--mobile {
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.99);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1.5rem 1.5rem 2rem;
+  gap: 0;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+  box-shadow: -4px 0 40px rgba(30, 58, 95, 0.15);
+  overflow-y: auto;
+}
+
+.fn-nav--mobile.fn-nav--open {
+  transform: translateX(0);
+}
+
+.fn-btn--mobile-cta {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  text-align: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: 100%;
+}
+
+/* On mobile: show mobile nav, hide desktop nav */
+@media (max-width: 768px) {
+  .fn-nav--desktop { display: none !important; }
+  .fn-nav--mobile  { display: flex; }
+  .fn-nav-toggle   { display: flex; }
+
+  .fn-nav--mobile .fn-nav__link {
+    padding: 1.1rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 0;
+
+    &:last-of-type { border-bottom: none; }
+  }
+}
+
+/* On desktop: hide hamburger */
+@media (min-width: 769px) {
+  .fn-nav-toggle { display: none !important; }
+}
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+}
+
+.fn-root {
+  overflow-x: hidden;
 }

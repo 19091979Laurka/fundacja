@@ -63,7 +63,6 @@ export default function Home() {
       {/* ── HERO — split layout ──────────────────────────────── */}
       <section className="fn-hero">
         <div className="fn-hero__content">
-          {/* Left: text */}
           <div className="fn-hero__text">
             <div className="fn-hero__badge">
               ⚖ {branding.tagline}
@@ -84,8 +83,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-
-          {/* Right: photo */}
           <div className="fn-hero__media">
             <img
               src="/buildings.jpg"
@@ -93,7 +90,6 @@ export default function Home() {
             />
           </div>
         </div>
-
         <div className="fn-hero__scroll">
           <span>Przewiń</span>
           <div className="fn-hero__scroll-line" />
@@ -150,42 +146,26 @@ export default function Home() {
       {home.ourGoal && (
         <section className="fn-section">
           <div className="fn-container">
-            {/* Two-column: text left, image right */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
-              <div>
+            <div className="fn-split-grid">
+              <div className="fn-split-grid__text">
                 <span className="fn-section__eyebrow">Misja</span>
-                <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+                <h2 className="fn-section__title fn-section__title--left">
                   Nasz cel
                 </h2>
-                <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
+                <p className="fn-split-grid__body">
                   {home.ourGoal}
                 </p>
                 <Link to="/o-nas" className="fn-btn fn-btn--primary">
                   Więcej o fundacji →
                 </Link>
               </div>
-              <div style={{ position: "relative" }}>
+              <div className="fn-split-grid__media">
                 <img
                   src="/interconnected.jpg"
                   alt="Misja fundacji"
-                  style={{
-                    width: "100%",
-                    height: "360px",
-                    objectFit: "cover",
-                    borderRadius: "20px",
-                    boxShadow: "0 12px 48px rgba(30,58,95,0.14)",
-                  }}
+                  className="fn-split-grid__img"
                 />
-                {/* Blue left accent */}
-                <div style={{
-                  position: "absolute",
-                  top: "24px",
-                  left: "-12px",
-                  width: "6px",
-                  height: "calc(100% - 48px)",
-                  background: "#2563eb",
-                  borderRadius: "3px",
-                }} />
+                <div className="fn-split-grid__accent fn-split-grid__accent--left" />
               </div>
             </div>
           </div>
@@ -204,12 +184,12 @@ export default function Home() {
           </div>
           <div className="fn-chart-card">
             <div className="fn-chart-card__title">Aktywność programowa</div>
-            <div style={{ height: 320 }}>
+            <div style={{ height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} />
-                  <YAxis tick={{ fontSize: 12, fill: "#64748b" }} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#64748b" }} />
+                  <YAxis tick={{ fontSize: 11, fill: "#64748b" }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
                     wrapperStyle={{ fontSize: "0.82rem", color: "#64748b", paddingTop: "1rem" }}
@@ -236,7 +216,7 @@ export default function Home() {
           </div>
           <div className="fn-map-card">
             <div className="fn-map-card__header">Mapa operacyjna</div>
-            <div style={{ height: 400 }}>
+            <div style={{ height: 380 }}>
               <MapContainer
                 center={mapCenter}
                 zoom={6}
@@ -250,9 +230,7 @@ export default function Home() {
                 {locations.map((loc) => (
                   <Marker key={loc.name} position={loc.position}>
                     <Popup>
-                      <strong>{loc.name}</strong>
-                      <br />
-                      {loc.desc}
+                      <strong>{loc.name}</strong><br />{loc.desc}
                     </Popup>
                   </Marker>
                 ))}
@@ -274,19 +252,13 @@ export default function Home() {
           </div>
           <div className="fn-team-grid">
             {team.map((person) => {
-              const initials = person.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .slice(0, 2);
+              const initials = person.name.split(" ").map((n) => n[0]).join("").slice(0, 2);
               return (
                 <div key={person.name} className="fn-team-card">
                   <div className="fn-team-card__avatar">{initials}</div>
                   <h3 className="fn-team-card__name">{person.name}</h3>
                   <p className="fn-team-card__role">{person.role}</p>
-                  {person.desc && (
-                    <p className="fn-team-card__desc">{person.desc}</p>
-                  )}
+                  {person.desc && <p className="fn-team-card__desc">{person.desc}</p>}
                 </div>
               );
             })}

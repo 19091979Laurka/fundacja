@@ -19,10 +19,10 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── KIM JESTEŚMY — split layout ──────────────────────── */}
+      {/* ── KIM JESTEŚMY ─────────────────────────────────────── */}
       <section className="fn-section">
         <div className="fn-container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "start" }}>
+          <div className="fn-two-col-grid">
             <div className="fn-accent-box">
               <span className="fn-section__eyebrow" style={{ display: "block", marginBottom: "0.5rem" }}>
                 Tożsamość
@@ -57,19 +57,13 @@ export default function About() {
           </div>
           <div className="fn-team-grid">
             {team.map((person) => {
-              const initials = person.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .slice(0, 2);
+              const initials = person.name.split(" ").map((n) => n[0]).join("").slice(0, 2);
               return (
                 <div key={person.name} className="fn-team-card">
                   <div className="fn-team-card__avatar">{initials}</div>
                   <h3 className="fn-team-card__name">{person.name}</h3>
                   <p className="fn-team-card__role">{person.role}</p>
-                  {person.desc && (
-                    <p className="fn-team-card__desc">{person.desc}</p>
-                  )}
+                  {person.desc && <p className="fn-team-card__desc">{person.desc}</p>}
                 </div>
               );
             })}
@@ -81,37 +75,23 @@ export default function About() {
       {branding?.pages?.partners && (
         <section className="fn-section">
           <div className="fn-container">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
-              <div>
+            <div className="fn-split-grid">
+              <div className="fn-split-grid__text">
                 <span className="fn-section__eyebrow">Współpraca</span>
-                <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+                <h2 className="fn-section__title fn-section__title--left">
                   Partnerzy systemowi
                 </h2>
-                <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75 }}>
+                <p className="fn-split-grid__body">
                   {branding.pages.partners}
                 </p>
               </div>
-              <div style={{ position: "relative" }}>
+              <div className="fn-split-grid__media">
                 <img
                   src="/citydark.jpg"
                   alt="Partnerzy fundacji"
-                  style={{
-                    width: "100%",
-                    height: "300px",
-                    objectFit: "cover",
-                    borderRadius: "20px",
-                    boxShadow: "0 12px 48px rgba(30,58,95,0.14)",
-                  }}
+                  className="fn-split-grid__img"
                 />
-                <div style={{
-                  position: "absolute",
-                  top: "20px",
-                  right: "-10px",
-                  width: "6px",
-                  height: "calc(100% - 40px)",
-                  background: "#2563eb",
-                  borderRadius: "3px",
-                }} />
+                <div className="fn-split-grid__accent fn-split-grid__accent--right" />
               </div>
             </div>
           </div>
@@ -127,7 +107,6 @@ export default function About() {
               <h2 className="fn-section__title">Bezpieczeństwo publiczne i zarządzanie ryzykiem</h2>
               <p className="fn-section__lead">{safety.intro}</p>
             </div>
-
             <div className="fn-feature-grid">
               {safety.riskManagement?.title && (
                 <div className="fn-feature">
@@ -136,7 +115,6 @@ export default function About() {
                   <p className="fn-feature__text">{safety.riskManagement.text}</p>
                 </div>
               )}
-
               {safety.escapeProcedures?.title && (
                 <div className="fn-feature">
                   <div className="fn-feature__icon">🚨</div>
@@ -153,7 +131,6 @@ export default function About() {
                   )}
                 </div>
               )}
-
               {safety.reporting && (
                 <div className="fn-feature">
                   <div className="fn-feature__icon">📋</div>

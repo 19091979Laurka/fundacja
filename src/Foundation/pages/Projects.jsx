@@ -111,18 +111,16 @@ export default function Projects() {
       {strategy.horizon && (
         <section className="fn-section">
           <div className="fn-container">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
-              <div>
+            <div className="fn-split-grid">
+              <div className="fn-split-grid__text">
                 <span className="fn-section__eyebrow">Strategia</span>
-                <h2 className="fn-section__title" style={{ textAlign: "left", marginBottom: "1.25rem" }}>
+                <h2 className="fn-section__title fn-section__title--left">
                   Horyzont finansowania
                 </h2>
-                <p style={{ fontSize: "1rem", color: "#64748b", lineHeight: 1.75, marginBottom: "2rem" }}>
-                  {strategy.horizon}
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <p className="fn-split-grid__body">{strategy.horizon}</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
                   {(strategy.goals ?? []).map((goal, i) => (
-                    <div key={i} className="fn-accent-box" style={{ borderLeftColor: i === 0 ? "#2563eb" : "#1e3a5f" }}>
+                    <div key={i} className={`fn-accent-box${i === 0 ? "" : " fn-accent-box--navy"}`}>
                       <p className="fn-accent-box__text" style={{ margin: 0 }}>
                         {i === 0 ? "🇪🇺 " : "💶 "}{goal}
                       </p>
@@ -130,17 +128,11 @@ export default function Projects() {
                   ))}
                 </div>
               </div>
-              <div style={{ position: "relative" }}>
+              <div className="fn-split-grid__media">
                 <img
                   src="/interconnected.jpg"
                   alt="Strategia finansowania"
-                  style={{
-                    width: "100%",
-                    height: "380px",
-                    objectFit: "cover",
-                    borderRadius: "20px",
-                    boxShadow: "0 12px 48px rgba(30,58,95,0.14)",
-                  }}
+                  className="fn-split-grid__img"
                 />
               </div>
             </div>
