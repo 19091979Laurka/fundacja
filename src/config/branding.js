@@ -138,14 +138,14 @@ export const branding = {
   // Prezentacje / materiały do pobrania (pliki w public/documents/)
   presentations: [
     {
-      title: "Prezentacja 1",
-      file: "program-transgranicznej-reintegracji.pdf",
-      description: "Prezentacja o programie transgranicznej reintegracji.",
+      title: "Transnational Forensic Reintegration",
+      file: "transnational-forensic-reintegration.pdf",
+      description: "Prezentacja programu transgranicznej reintegracji sądowej.",
     },
     {
-      title: "Prezentacja 2",
-      file: "niwyja-reintegration-cbt-veldzicht.pdf",
-      description: "Prezentacja o modelu działania i bezpieczeństwie.",
+      title: "Nowy JA Reintegration",
+      file: "nowy-ja-reintegration.pdf",
+      description: "Prezentacja modelu działania i reintegracji Fundacji NOWY JA.",
     },
   ],
 };
